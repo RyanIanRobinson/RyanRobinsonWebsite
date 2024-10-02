@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Energy</title>
+    <script src="scripts/trade_energy.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <h1>Trade Energy</h1>
+    <p>This page links to a trading model I have which uses an elementary neural networks model to forecast the price of electicity in San Francisco based on the weather. Soo I'll make this webpage a bit more interactive adding a selector for which city you want, as well as building out the model to consider enrgy blackouts, seasonal changes, and any other key driving factors I can find!</p>
+
+    <h2>Run Model</h2>
+    <button onclick="runModel()">Run Trading Model</button>
+    <div id="output"></div>
+
+    <script>
+        async function runModel() {
+            try {
+                const response = await fetch('/runModel');
+                const data = await response.json();
+                
+                if (data.error) {
+                    document.getElementById('output').innerText = `Error: ${data.error}`;
+                } else {
+                    let outputHTML = `<p>Current Close Price: ${data.current_close_price}</p>`;
+                    outputHTML += '<table border="1"><tr><th>Day</th><th>Predicted Close Price</th><th>CI Lower 95%</th><th>CI Upper 95%</th></tr>';
+                    data.predictions.forEach(prediction => {
+                        outputHTML += `<tr>
+                            <td>${prediction.Day}</td>
+                            <td>${prediction.Predicted_Close_Price}</td>
+                            <td>${prediction.CI_Lower_95}</td>
+                            <td>${prediction.CI_Upper_95}</td>
+                        </tr>`;
+                    });
+                    outputHTML += '</table>';
+                    outputHTML += `<p>Trading Decision: ${data.decision}</p>`;
+
+                    document.getElementById('output').innerHTML = outputHTML;
+                }
+            } catch (error) {
+                document.getElementById('output').innerText = `Error: ${error}`;
+            }
+        }
+    </script>
+
+    <footer>
+        <p>© 2024 Ryan Robinson - All Rights Reserved</p>
+    </footer>
+</body>
+</html>

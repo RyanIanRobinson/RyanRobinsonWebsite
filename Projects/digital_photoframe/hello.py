@@ -71,12 +71,19 @@ except Exception as e:
 import torch
 import requests
 from PIL import Image
-from transformers import BlipProcessor, Blip2ForConditionalGeneration, BitsAndBytesConfig
+from transformers import BlipProcessor, Blip2ForConditionalGeneration, BitsAndBytesConfig, T5Tokenizer
+import os
+import logging
+logging.basicConfig(level=logging.DEBUG)
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
-folder_processor_cache = "F:/GitHub/Websites/Projects/digital_photoframe/processor_cache"
-folder_model_cache = "F:/GitHub/Websites/Projects/digital_photoframe/model_cache"
-folder_tokenizer_cache = "F:/GitHub/Websites/Projects/digital_photoframe/tokenizer_cache"
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
+folder_tokenizer_cache = os.path.join(script_dir, "tokenizer_cache")  # Cache folder
+folder_processor_cache = os.path.join(script_dir, "processor_cache")  # Cache folder
+folder_model_cache = os.path.join(script_dir, "model_cache")  # Cache folder
+
+tokenizer = T5Tokenizer.from_pretrained("Salesforce/blip2-flan-t5-xl")
 processor = BlipProcessor.from_pretrained("Salesforce/blip2-flan-t5-xl", cache_dir=folder_processor_cache)
 quantization_config = BitsAndBytesConfig(llm_int8_enable_fp32_cpu_offload=True)
 model = Blip2ForConditionalGeneration.from_pretrained(
@@ -119,6 +126,10 @@ print(torch.cuda.is_available())
 print(torch.cuda.get_device_properties(0).major)
 print(torch.cuda.get_device_properties(0).minor)
 print(model.hf_device_map)
+
+"""print("Pixel Values Shape:", pixel_values.shape)
+print("Input IDs Shape:", input_ids.shape)
+print("Attention Mask Shape:", attention_mask.shape)"""
 
 # Run the model to generate the output
 try:

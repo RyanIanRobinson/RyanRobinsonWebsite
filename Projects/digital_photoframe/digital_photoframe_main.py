@@ -8,10 +8,12 @@ print(", PIL", end = "")
 from transformers import Blip2Processor, Blip2ForConditionalGeneration
 print(", transformers (Blip2Processor and Blip2ForConditionalGeneration)")
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Load model and processor
 print("Loading processor and model...")
-folder_processor_cache = os.path.join(os.getcwd(), "processor_cache") # Subfolder in the current directory
-folder_model_cache = os.path.join(os.getcwd(), "model_cache")  # Subfolder in the current directory
+folder_processor_cache = os.path.join(script_dir, "processor_cache") # Subfolder in the current directory
+folder_model_cache = os.path.join(script_dir, "model_cache")  # Subfolder in the current directory
 print("Created cache directories")
 processor = Blip2Processor.from_pretrained("Salesforce/blip2-flan-t5-xl", cache_dir = folder_processor_cache)
 print("Loaded processor")
@@ -19,7 +21,6 @@ model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-
 print("Loaded model")
 
 # Define the directory containing the photos
-script_dir = os.path.dirname(os.path.abspath(__file__))
 photos_dir = os.path.join(script_dir, "photos")
 
 # Define the prompt

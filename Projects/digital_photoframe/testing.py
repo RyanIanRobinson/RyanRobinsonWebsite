@@ -18,11 +18,12 @@ warnings.filterwarnings("ignore")
 
 # Setup models
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load BLIP2 processor and model
-folder_processor_cache = os.path.join(os.getcwd(), "processor_cache")  # Cache folder
-folder_model_cache = os.path.join(os.getcwd(), "model_cache")  # Cache folder
-folder_tokenizer_cache = os.path.join(os.getcwd(), "tokenizer_cache")  # Cache folder
+folder_processor_cache = os.path.join(script_dir, "processor_cache")  # Cache folder
+folder_model_cache = os.path.join(script_dir, "model_cache")  # Cache folder
+folder_tokenizer_cache = os.path.join(script_dir, "tokenizer_cache")  # Cache folder
 print("Loading BLIP2 tokenizer...")
 tokenizer = T5Tokenizer.from_pretrained("Salesforce/blip2-flan-t5-xl", cache_dir=folder_tokenizer_cache)
 print("Loading BLIP2 processor...")
@@ -158,7 +159,6 @@ def process_images_in_folder(folder_path):
         print(f"Moving to next image...\n")
         
 # Main execution
-script_dir = os.path.dirname(os.path.abspath(__file__))
 photos_dir = os.path.join(script_dir, "photos") # Path to your folder with images
 print("photos_dir: ", photos_dir)
 

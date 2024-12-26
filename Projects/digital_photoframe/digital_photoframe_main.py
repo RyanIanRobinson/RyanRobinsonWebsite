@@ -19,7 +19,8 @@ model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-flan-t5-
 print("Loaded model")
 
 # Define the directory containing the photos
-photos_dir = os.path.join(os.getcwd(), "photos")  # Subfolder "photos" in the current directory
+script_dir = os.path.dirname(os.path.abspath(__file__))
+photos_dir = os.path.join(script_dir, "photos")
 
 # Define the prompt
 prompt = """

@@ -8,3 +8,4 @@
 # Ignore all files in input_data/ and training_data/ directories
 */input_data/*
 */training_data/*
+*_cache/*

@@ -62,8 +62,8 @@ while True:
             # Display the caption
             print(f"Caption for {photo_filename}: {caption}\n")
 
-            # Wait for 15 seconds before moving to the next image
-            time.sleep(15)
+            # Wait for 5 seconds before moving to the next image
+            time.sleep(5)
 
         except Exception as e:
             print(f"Error processing {photo_filename}: {e}")

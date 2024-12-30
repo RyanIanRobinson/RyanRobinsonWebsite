@@ -1,62 +1,26 @@
+import hdbscan
+from sklearn.cluster import DBSCAN
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 from mtcnn import MTCNN
 import tempfile
 import torch
-import requests
 from PIL import Image
 import os
 import warnings
-from transformers import CLIPProcessor, CLIPModel
 import clip
 import cv2
+import numpy as np
 
 # Suppress all warnings
 warnings.filterwarnings('ignore')
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
-model_name = "openai/clip-vit-base-patch16"
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
-"""
-folder_tokenizer_cache = os.path.join(script_dir, "tokenizer_cache", model_name)  # Cache folder
-folder_processor_cache = os.path.join(script_dir, "processor_cache", model_name)  # Cache folder
-folder_model_cache = os.path.join(script_dir, "model_cache", model_name)  # Cache folder
-
-os.makedirs(folder_tokenizer_cache, exist_ok = True)
-os.makedirs(folder_processor_cache, exist_ok = True)
-os.makedirs(folder_model_cache, exist_ok = True)
-
-#tokenizer = T5Tokenizer.from_pretrained(model_name, cache_dir=folder_tokenizer_cache)
-processor = CLIPProcessor.from_pretrained(model_name, cache_dir=folder_processor_cache)
-model = CLIPModel.from_pretrained(model_name, cache_dir=folder_model_cache)
-
-# Load test image
-img_url = "https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg"
-raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
-
-# Define the text prompts
-prompts = ["two cats", "a photo of a dog", "a photo of a human", "dog and human caricature"]
-
-# Preprocess the image and the prompt
-inputs = processor(text=prompts, images=raw_image, return_tensors="pt", padding=True)
-
-# Run the model to generate the output
-try:
-    output = model(**inputs)
-    logits_per_image = output.logits_per_image  # this is the image-text similarity score
-    probs = logits_per_image.softmax(dim=1)
-    
-    print(f"Model output: {output}")
-    print(f"Probabilities: {probs}")
-except Exception as e:
-    print(f"An error occurred during generation: {e}")
-"""
-#######################################################################################################################################
 # Load the CLIP model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device)
-# Load OpenCV's pre-trained face detector (Haar Cascade)
-#face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
 detector = MTCNN()
 
 # Function to process and encode images into CLIP embeddings
@@ -76,33 +40,70 @@ def get_image_embedding(image_input):
     
     return image_features / image_features.norm(dim=-1, keepdim=True)
 
-# Function to calculate average embeddings for a set of images
-def get_average_embedding(image_folder):
-    embeddings = []
-    for image_name in os.listdir(image_folder):
-        image_path = os.path.join(image_folder, image_name)
-        embedding = get_image_embedding(image_path)
-        embeddings.append(embedding)
-    return torch.mean(torch.stack(embeddings), dim=0)
+def cluster_embeddings(embeddings):
+    # Ensure embeddings is not empty
+    if not embeddings:
+        print("No embeddings provided.")
+        return []
+
+    # Convert embeddings to a 2D NumPy array
+    embeddings_array = np.array([embedding.cpu().numpy().flatten() if isinstance(embedding, torch.Tensor) else np.array(embedding).flatten() for embedding in embeddings])
+    
+    # Check if the embeddings_array is empty
+    if embeddings_array.size == 0:
+        print("Embeddings array is empty after conversion.")
+        print("Embeddings: ", embeddings)
+        return []
+
+    # Check if there are enough samples for PCA
+    if embeddings_array.shape[0] < 2:
+        print(f"Not enough samples for PCA. Number of samples: {embeddings_array.shape[0]}")
+        print("Embeddings: ", embeddings)
+        return []
+
+    # Use PCA to reduce the dimensionality of the embeddings to 2D for visualization
+    pca = PCA(n_components=2)
+    reduced_embeddings = pca.fit_transform(embeddings_array)
+
+    # Plot the 2D PCA projection for visual inspection
+    plt.scatter(reduced_embeddings[:, 0], reduced_embeddings[:, 1])
+    plt.title("2D PCA visualization of embeddings")
+    plt.show()
+
+    # Apply HDBSCAN clustering with Euclidean distance
+    clusterer = hdbscan.HDBSCAN(min_samples=3, metric='euclidean')
+    clusterer.fit(reduced_embeddings)
+
+    print("Clusterer: ", clusterer)
+    print("Cluster labels: ", clusterer.labels_)
+
+    return clusterer.labels_
+
+def get_cluster_average(embeddings, labels):
+    cluster_averages = {}
+    for label in set(labels):
+        clustered_embeddings = [embeddings[i] for i in range(len(embeddings)) if labels[i] == label]
+        cluster_average = torch.mean(torch.stack(clustered_embeddings), dim=0)
+        cluster_averages[label] = cluster_average
+    print("cluster_averages: ", cluster_averages)
+    return cluster_averages
 
 # Function to calculate similarity scores (probabilities) for each category
-def get_probabilities(face_embedding, reference_embeddings):
+def get_probabilities(face_embedding, reference_cluster_averages):
     similarities = {}
-    for name, ref_embedding in reference_embeddings.items():
-        similarity = torch.cosine_similarity(face_embedding, ref_embedding)
-        similarities[name] = similarity.item()  # Store cosine similarity as probability
+    for name, cluster_averages in reference_cluster_averages.items():
+        # Compare the face_embedding to each cluster's average
+        max_similarity = -1
+        for cluster_label, cluster_avg in cluster_averages.items():
+            # Use cosine similarity to compare face_embedding with each cluster's average
+            similarity = torch.cosine_similarity(face_embedding, cluster_avg)
+            max_similarity = max(max_similarity, similarity.item())
+
+        similarities[name] = max_similarity
     
     return similarities
 
-# Function to detect faces in an image using OpenCV
-"""
-def detect_faces(image_path):
-    # OpenCV face detection
-    image = cv2.imread(image_path)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    return faces
-"""
+# Function to detect faces in an image
 def detect_faces(image_path):
     image = cv2.imread(image_path)
     faces = detector.detect_faces(image)
@@ -138,17 +139,14 @@ def classify_faces_in_image(image_path, reference_embeddings, threshold=0.75):
                 best_match_prob = prob
                 best_match_name = name
         
-        # Only accept matches above the threshold
-        if best_match_prob >= threshold:
-            results.append({
-                "best_match": best_match_name,
-                "probabilities": probability
-            })
-        else:
-            results.append({
-                "best_match": "Did not meet threshold",
-                "probabilities": probability
-            })
+        print("best_match_name: ", best_match_name)
+        print("best_match_prob: ", best_match_prob)
+
+        # Append the result, including probabilities for all cases
+        results.append({
+            "best_match": best_match_name if best_match_prob >= threshold else "Did not meet threshold",
+            "probabilities": probability
+        })
         
         # Optionally, delete the temporary file after processing
         os.remove(temp_file_path)
@@ -174,33 +172,47 @@ def show_results(image_paths, detected_faces):
             for name, prob in result["probabilities"].items():
                 print(f"        {name}: {prob:.18f}")
         
-        print()  # Print a blank line between images
+        print()
 
-# Image folders for training data
-grayson_folder = os.path.join(script_dir, "training_data", "grayson")
-hayden_folder = os.path.join(script_dir, "training_data", "hayden")
-josie_folder = os.path.join(script_dir, "training_data", "josie")
-ryan_folder = os.path.join(script_dir, "training_data", "ryan")
-tanto_folder = os.path.join(script_dir, "training_data", "tanto")
-strangers_folder = os.path.join(script_dir, "training_data", "strangers")
+# Function to create folder paths and process embeddings and clusters
+def process_person_data(names, base_dir):
+    reference_embeddings = {}
+    reference_cluster_averages = {}
 
-# Create reference embeddings for each category
-grayson_embedding = get_average_embedding(grayson_folder)
-hayden_embedding = get_average_embedding(hayden_folder)
-josie_embedding = get_average_embedding(josie_folder)
-ryan_embedding = get_average_embedding(ryan_folder)
-tanto_embedding = get_average_embedding(tanto_folder)
-strangers_embedding = get_average_embedding(strangers_folder)
+    for name in names:
+        print(f"\n\nname")
+        # Create the folder path for each person dynamically
+        folder = os.path.join(base_dir, name.lower())  # assuming folder names are lowercase
+        if not os.path.exists(folder):
+            print(f"Folder does not exist for {name}, skipping.")
+            continue
 
-# Store reference embeddings in a dictionary
-reference_embeddings = {
-    "Grayson": grayson_embedding,
-    "Hayden": hayden_embedding,
-    "Josie": josie_embedding,
-    "Ryan": ryan_embedding,
-    "Tanto": tanto_embedding,
-    "Strangers": strangers_embedding,
-}
+        # Create reference embeddings for each category
+        embeddings = [get_image_embedding(os.path.join(folder, img)) for img in os.listdir(folder)]
+        
+        # Store embeddings in reference_embeddings dictionary
+        reference_embeddings[name] = embeddings
+        print(f"reference_embeddings[name]: {name}", reference_embeddings[name][0][0])
+        
+        # Cluster and get average embeddings for each person
+        clusters = cluster_embeddings(embeddings)
+        cluster_averages = get_cluster_average(embeddings, clusters)
+        
+        # Store cluster averages in reference_cluster_averages dictionary
+        reference_cluster_averages[name] = cluster_averages
+
+    return reference_embeddings, reference_cluster_averages
+
+# Base directory where the folders are located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+base_dir = os.path.join(script_dir, "training_data")
+
+# List of names for people
+names = ["Grayson", "Hayden", "Josie", "Ryan", "Tanto", "Strangers"]
+
+# Process the data using the function
+reference_embeddings, reference_cluster_averages = process_person_data(names, base_dir)
+print("Person data has been processed")
 
 # Folder where you want to classify images
 input_data_folder = os.path.join(script_dir, "input_data")
@@ -208,7 +220,7 @@ image_paths = [os.path.join(input_data_folder, img) for img in os.listdir(input_
 
 detected_faces = []
 for image_path in image_paths:
-    result = classify_faces_in_image(image_path, reference_embeddings)
+    result = classify_faces_in_image(image_path, reference_cluster_averages)
     detected_faces.append(result)
 
 # Show the results

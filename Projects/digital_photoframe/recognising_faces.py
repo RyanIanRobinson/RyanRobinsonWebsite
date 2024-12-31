@@ -1,3 +1,4 @@
+from datetime import datetime
 import hdbscan
 from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
@@ -40,7 +41,7 @@ def get_image_embedding(image_input):
     
     return image_features / image_features.norm(dim=-1, keepdim=True)
 
-def cluster_embeddings(embeddings):
+def cluster_embeddings(embeddings, name):
     # Ensure embeddings is not empty
     if not embeddings:
         print("No embeddings provided.")
@@ -65,10 +66,16 @@ def cluster_embeddings(embeddings):
     pca = PCA(n_components=2)
     reduced_embeddings = pca.fit_transform(embeddings_array)
 
+    # Generate timestamp for the filename
+    timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    plot_directory = os.path.join(script_dir, "cluster_plots")
+    plot_filename = f"{name}_{timestamp}.png"
+    
     # Plot the 2D PCA projection for visual inspection
     plt.scatter(reduced_embeddings[:, 0], reduced_embeddings[:, 1])
     plt.title("2D PCA visualization of embeddings")
-    plt.show()
+    plt.savefig(os.path.join(plot_directory, plot_filename))
+    plt.close() 
 
     # Apply HDBSCAN clustering with Euclidean distance
     clusterer = hdbscan.HDBSCAN(min_samples=3, metric='euclidean')
@@ -195,7 +202,7 @@ def process_person_data(names, base_dir):
         print(f"reference_embeddings[name]: {name}", reference_embeddings[name][0][0])
         
         # Cluster and get average embeddings for each person
-        clusters = cluster_embeddings(embeddings)
+        clusters = cluster_embeddings(embeddings, name)
         cluster_averages = get_cluster_average(embeddings, clusters)
         
         # Store cluster averages in reference_cluster_averages dictionary

@@ -1,0 +1,12 @@
+# Ignore all .jpg and .png files
+*.jpg
+*.png
+
+# Ignore all .txt files
+*.txt
+
+# Ignore all files in data and cache directories
+*/input_data/*
+*/training_data/*
+*_cache/*
+*/__pycache__/*

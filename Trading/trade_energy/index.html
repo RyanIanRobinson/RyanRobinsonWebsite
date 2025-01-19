@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Energy - Ryan Robinson</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <style>
+        .script-header {
+            color: #4a90e2;
+            cursor: pointer;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #292938;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .script-header:hover {
+            background-color: #1e1e2f;
+        }
+
+        .code-window {
+            background-color: #292938;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #222;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #ccc;
+        }
+
+        nav a {
+            color: #4a90e2;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+        </nav>
+    </header>
+
+    <div class="page-title">
+        <h1>Trading Energy</h1>
+    </div>
+
+    <div class="main-container">
+        <p>This page showcases the scripts used in the Trading Energy project. Click a script header to view its code.</p>
+        
+        <div class="code-window">
+            <h3>Scripts</h3>
+            <div class="script-header" onclick="showCode('main')">main.py</div>
+        </div>
+
+        <div id="code-display" class="code-window">
+            <h3>Code Preview</h3>
+            <pre id="code-content">Select a script to view its code here.</pre>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
+    </footer>
+
+ 
+
+    <script>
+        // Hardcoded code content for demonstration
+        const scriptContents = {
+            "captioning": 
+`
+from data_processing.load_data import collect_data, clean_data
+from data_processing.feature_engineering import extract_features
+from model.neural_network import train_model
+from model.predict import make_predictions
+from evaluation.evaluate import evaluate_model
+from logger.logger import setup_logger, log_info, log_error
+import requests
+import pandas as pd
+
+openweathermap_api_key = 'XXX'
+city = 'San Francisco'
+
+eia_api_key = "XXX"
+
+def main():
+    setup_logger()
+
+    url = f"https://api.eia.gov/v2/electricity/rto/wholesale-prices/data/?api_key={eia_api_key}"
+    response = requests.get(url)
+    data = response.json()
+    series_data = data['response']['data']
+    df = pd.DataFrame(series_data, columns=['date', 'value'])
+    df.columns = ['Date', 'System_Load']
+    print("testing system_load\n\n\n", data, "\n\n\ntested system_load")
+    
+    try:
+        log_info("Loading data...")
+        df = collect_data(openweathermap_api_key, eia_api_key, city)
+        print("\nLoaded Data:\n", df.head())
+        
+        log_info("Cleaning data...")
+        df = clean_data(df)
+        print("\nCleaned Data:\n", df.columns, "\n", df)
+
+        log_info("Extracting features...")
+        features, target = extract_features(df)
+        print("\nExtracted features:\n", features.columns, "\n", features)
+        print("\nExtracted target:\n", target.columns, "\n", target)
+
+        log_info("Training model...")
+        model = train_model(features, target)
+        print("\nTrained Model:\n", model, "\n")
+
+        log_info("Evaluating model...")
+        evaluate_model(model, features, target)
+        print("\nEvaluated Model", "\n")
+
+        log_info("Making predictions...")
+        predictions = make_predictions(model, features)
+        print("\nPredictions:\n", predictions)
+
+    except Exception as e:
+        log_error(f"An error occurred: {e}")
+        raise
+
+if __name__ == '__main__':
+    main()
+`
+        };
+
+        // Function to display selected script content
+        function showCode(scriptName) {
+            const codeDisplay = document.getElementById('code-content');
+            codeDisplay.textContent = scriptContents[scriptName] || "Error: Script content not found.";
+        }
+    </script>
+</body>
+</html>

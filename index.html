@@ -1,152 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
-    <title>Ryan Robinson</title>
-</head>
+    <title>Ryan Robinson - About Me and Career Journey</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1c1f2c;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
+        header {
+            background-color: #33374d;
+            padding: 15px 20px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header a {
+            color: #4a90e2;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        .page-title {
+            width: 100%;
+            padding: 10px 0;
+            background-color: #2c2f3a;
+            text-align: center;
+        }
+
+        .page-title h1 {
+            font-size: 1.7rem;  /* Reduced font size for the headers */
+            color: #4a90e2;
+            margin: 0;
+        }
+
+        .about-me {
+            text-align: center;
+            padding: 30px 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #33374d;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px; /* Added bottom margin for spacing */
+        }
+
+        .about-me h2 {
+            font-size: 1.3rem; /* Reduced font size */
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        .about-me p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .career-timeline {
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 30px;
+            background-color: #33374d;
+            padding: 30px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .career-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            width: 100%;
+            position: relative;
+        }
+
+        .career-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .career-bar-container {
+            flex-grow: 1;
+            position: relative;
+            height: 40px;
+            background-color: #1e1e2f;
+            border-radius: 8px;
+            margin-left: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .career-bar {
+            background-color: #4a90e2;
+            height: 100%;
+            border-radius: 8px;
+            position: absolute;
+        }
+
+        .career-bar-description {
+            position: absolute;
+            right: 10px;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            color: #ccc;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #33374d;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .career-timeline {
+                padding: 20px;
+            }
+            .career-item {
+                flex-direction: column;
+                align-items: flex-start;
+                margin: 20px 0;
+            }
+            .career-bar-container {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
 <body>
+
     <header>
         <nav>
-            <ul>
-                <li><a href="../Home/index.html">Home</a></li>
-                <li><a href="../Home/resume.html">Resume</a></li>
-                <li><a href="../Trading/trading.html">Trading</a></li>
-                <li><a href="../Games/games.html">Games</a></li>
-                <li><a href="../Robotics/robotics.html">Robotics</a></li>
-            </ul>
+            <a href="../index.html">Home</a>
+            <a href="projects/index.html">Projects</a>
+            <a href="trading/index.html">Trading</a>
+            <a href="games/index.html">Games</a>
         </nav>
     </header>
-    <main>
-        <div class="section about-me">
-            <img src="../Images/about_me.jpg" alt="Ryan being weird">
-            <div>
-                <h2 class="section-header">About Me</h2>
-                <p>Hey there, legend! I'm Ryan Robinson, and if you had to pick one word to sum me up, it’d probably be “quirky” (or “weird” if we're being brutally honest). I have a bit of a reputation for waking up at the ungodly hour of 0200 on Saturdays just to catch the astronomical, nautical, and civil dawn—what can I say, I'm committed to my sunrises. Military time? Yeah, that’s a permanent setting in my life, and I’ll challenge anyone to a mental arithmetic duel any day of the week.</p>
-                <p>When I'm not busy pondering life’s mysteries or climbing the nearest mountain, you'll find me devising absolutely absurd gifts for my mates—because who doesn’t love a surprise matching shirt set or 2m teddy bear? I love math and science so now I'm also studying, reading, and coding about trading, astronomy, and health sciences.</p>
-                <p>Welcome to my little slice of the internet, where data, humour, and a whole lot of weirdness collide!</p>
+
+    <div class="page-title">
+        <h1>About Me</h1>
+    </div>
+
+    <div class="about-me">
+        <h2>Hi, I'm Ryan Robinson!</h2>
+        <p>
+            If I had to pick one word to sum myself up, it would probably be “quirky” (or maybe “weird” if we're being honest). I'm someone who wakes up at 0200 on Saturdays to catch the astronomical, nautical, and civil dawn—yes, military time is a permanent setting in my life. I’ll also challenge anyone to a mental arithmetic duel any day of the week.
+        </p>
+        <p>
+            When I'm not pondering life's mysteries or climbing mountains, you can find me creating weird and wonderful gifts for my friends. Who doesn’t love a surprise matching shirt set or a 2-meter teddy bear? I'm deeply passionate about math and science, and now I'm diving into trading, astronomy, and health sciences through my studies, reading, and coding.
+        </p>
+        <p>
+            Welcome to my slice of the internet, where data, humor, and a bit of weirdness collide!
+        </p>
+    </div>
+
+    <div class="page-title">
+        <h1>My Career Journey</h1>
+    </div>
+
+    <!-- Career Timeline -->
+    <div class="career-timeline">
+        <!-- Career items, bars with start/end dates calculated for visual timeline -->
+        
+        <!-- Megaport -->
+        <div class="career-item">
+            <img src="assets/images/logo_megaport.png" alt="Megaport">
+            <div class="career-bar-container">
+                <div class="career-bar" style="width: 6%; left: 0%;"></div> <!-- Adjust position and width -->
+                <div class="career-bar-description">DEC 2019 – MAR 2020</div>
             </div>
         </div>
 
-        <div class="section career-journey">
-            <!--img src="../Images/career_journey.jpg" alt="Ryan's career journey"-->
-            <div>
-                <h2 class="section-header">Career Journey</h2>
-                <p>I studied finance in university but soon got bored of excel so I started taking adhoc Math and Computer Science courses to delve into the exciting world of numbers without dollar signs. Still with finance as my main goal, I took internships and part-time jobs to learn about Queensland tourism statistics and data visualisation, accounting software data migration, payroll, and a few less entertaining things.</p>
-                <p>Leaving university, I'm here starting my journey at KPMG. I began in a Analytics and Data Management team doing predominantly data governance, management, and visualistion. I was pulled into a financial advisory team but quickly got bored and started doing work for the AI division. I've been learning NLP and implementing scoring analytics using decision trees, knowledge graphs, and exploring neural networks right now. KPMG has been a place where I've lead teams of analysts, driven the strategy of AI projects, budgeted software tools, and sparked my interest in creating coding projects like this website.</p>
-                <p>I don't know what the next stop for me is, but I'm hoping it's something that will fit one of the projects I do on this website!</p>
-                <div class="timeline">
-                    <div class="timeline-item" data-title="Megaport">
-                        <img src="../Images/megaport.png" alt="Megaport Logo" class="company-logo">
-                        <div class="tooltip">
-                            <h4>Megaport - Data Analyt/Cleanser</h4>
-                            <ul>
-                                <li>Quantitative Analysis</li>
-                                <li>Accounting Software Management</li>
-                                <li>Preparing & Interpreting Financial Statements</li>
-                                <li>Data Cleansing</li>
-                                <li>Excel Modelling</li>
-                                <li>VBA Development </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="timeline-item" data-title="IRP Architects">
-                        <img src="../Images/irparchitects.png" alt="IRP Architects Logo" class="company-logo">
-                        <div class="tooltip">
-                            <h4>IRP Architects – Finance Officer</h4>
-                            <ul>
-                                <li>Payroll</li>
-                                <li>Bad Debt Collection</li>
-                                <li>Superannuation Investment Management</li>
-                                <li>Government Grants </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="timeline-item" data-title="AUSTRADE">
-                        <img src="../Images/austrade.png" alt="AUSTRADE Logo" class="company-logo">
-                        <div class="tooltip">
-                            <h4>AUSTRADE – Data Analyst</h4>
-                            <ul>
-                                <li>Power BI</li>
-                                <li>Report Generation</li>
-                                <li>ArcGIS</li>
-                                <li>SuperCROSS </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="timeline-item" data-title="Macquarie Group">
-                        <img src="../Images/macquariegroup.png" alt="Macquarie Group Logo" class="company-logo">
-                        <div class="tooltip">
-                            <h4>Macquarie Group – Risk Management Projects & Change Intern</h4>
-                            <ul>
-                                <li>Data Optimisation</li>
-                                <li>Report Analysis</li>
-                                <li>Data Cleansing</li>
-                                <li>Policy Documentation</li>
-                                <li>Power BI</li>
-                                <li>Excel VBAs </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="timeline-item" data-title="180 Degrees Consulting">
-                        <img src="../Images/180degreesconsulting.png" alt="180DC Logo" class="company-logo">
-                        <div class="tooltip">
-                            <h4>180 Degrees Consulting – Global Data & Insights Specialist</h4>
-                            <ul>
-                                <li>Data Optimisation</li>
-                                <li>Report Analysis</li>
-                                <li>Data Infrastructure</li>
-                                <li>Power BI Dashboards</li>
-                                <li>International Collaboration</li>
-                                <li>Project Leader</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="timeline-item" data-title="KPMG">
-                        <img src="../Images/kpmg.png" alt="KPMG Logo" class="company-logo">
-                        <div class="tooltip">
-                            <h4>KPMG - Analytics & Data Management Consultant</h4>
-                            <ul>
-                                <li>Search Engine Designing</li>
-                                <li>Data Engineering</li>
-                                <li>Data Governance</li>
-                                <li>SQL Server</li>
-                                <li>Project Scope Design</li>
-                                <li>Report Analysis</li>
-                                <li>Stakeholder Engagement</li>
-                                <li>Low Code Product Designer</li>
-                                <li>Data Security</li>
-                                <li>Data Management</li>
-                                <li>Data Cleansing</li>
-                                <li>Project Budgeting</li>
-                                <li>Knowledge Pillar</li>
-                                <li>Documentation</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+        <!-- IRP Architects -->
+        <div class="career-item">
+            <img src="assets/images/logo_irparchitects.png" alt="IRP Architects">
+            <div class="career-bar-container">
+                <div class="career-bar" style="width: 47%; left: 8%;"></div> <!-- Adjust position and width -->
+                <div class="career-bar-description">APR 2020 – SEP 2022</div>
             </div>
         </div>
 
-        <div class="section burning-questions">
-            <img src="../Images/burning_questions.jpg" alt="Burning Questions">
-            <div>
-                <h2 class="section-header">Burning Questions?</h2>
-                <p><b>What’s your proudest achievement?</b></p>
-                <p>When I was 10, I got bored, started doing mental arithmetic, and taught myself a way of doing multiplication which helped me do double digit multiplication in my head with ease. 2 years later at a math camp, I found out that it was an ancient Chinese method. Summary: I'm proud of taking thousands of years to discover something already discovered. Woohoo 10yo me.</p>
-                <p><b>If you could only keep one hobby, which one would it be and why?</b></p>
-                <p>Defintely the sunrises. I can do runs if I need fresh air for the hikes, plus I some of my sunrises include hiking anyway. Also I want a job that will let me do fun data science or software development so I can just work back late worst comes to comes.</p>
+        <!-- 180 Degrees Consulting -->
+        <div class="career-item">
+            <img src="assets/images/logo_180degreesconsulting.png" alt="180 Degrees Consulting">
+            <div class="career-bar-container">
+                <div class="career-bar" style="width: 40%; left: 26%;"></div> <!-- Adjust position and width -->
+                <div class="career-bar-description">MAR 2021 – APR 2023</div>
             </div>
         </div>
-    </main>
+
+        <!-- Austrade -->
+        <div class="career-item">
+            <img src="assets/images/logo_austrade.png" alt="Austrade">
+            <div class="career-bar-container">
+                <div class="career-bar" style="width: 5%; left: 53%;"></div> <!-- Adjust position and width -->
+                <div class="career-bar-description">AUG 2022 – NOV 2022</div>
+            </div>
+        </div>
+
+        <!-- Macquarie Group -->
+        <div class="career-item">
+            <img src="assets/images/logo_macquarie.png" alt="Macquarie Group">
+            <div class="career-bar-container">
+                <div class="career-bar" style="width: 3%; left: 60%;"></div> <!-- Adjust position and width -->
+                <div class="career-bar-description">DEC 2022 – FEB 2023</div>
+            </div>
+        </div>
+
+        <!-- KPMG -->
+        <div class="career-item">
+            <img src="assets/images/logo_kpmg.png" alt="KPMG">
+            <div class="career-bar-container">
+                <div class="career-bar" style="width: 37%; left: 63%;"></div> <!-- Adjust position and width -->
+                <div class="career-bar-description">FEB 2023 – PRESENT</div>
+            </div>
+        </div>
+    </div>
 
     <footer>
-        <p>© 2024 Ryan Robinson - All Rights Reserved</p>
+        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
     </footer>
 
 </body>
-
 </html>

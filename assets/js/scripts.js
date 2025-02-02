@@ -1,101 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Photoframe Project - Ryan Robinson</title>
-    <link rel="stylesheet" href="../../assets/css/styles.css">
-    <style>
-        .script-header {
-            color: #4a90e2;
-            cursor: pointer;
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #292938;
-            border-radius: 8px;
-            text-align: left;
-        }
+// Function to dynamically load external HTML files (header & footer)
+function loadComponent(id, file) {
+    fetch(file)
+        .then(response => response.text())
+        .then(data => document.getElementById(id).innerHTML = data)
+        .catch(error => console.error(`Error loading ${file}:`, error));
+}
 
-        .script-header:hover {
-            background-color: #1e1e2f;
-        }
+// Load header and footer
+document.addEventListener("DOMContentLoaded", function () {
+    loadComponent("header-container", "/includes/header.html");
+    loadComponent("footer-container", "/includes/footer.html");
+});
 
-        .code-window {
-            background-color: #292938;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        pre {
-            background-color: #222;
-            color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #ccc;
-        }
-
-        nav a {
-            color: #4a90e2;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="../../index.html">Home</a>
-            <a href="../projects.html">Projects</a>
-        </nav>
-    </header>
-
-    <div class="page-title">
-        <h1>Digital Photoframe</h1>
-    </div>
-
-    <div class="main-container">
-        <p>This page showcases the scripts used in the Digital Photoframe project. Click a script header to view its code.</p>
-        
-        <div class="code-window">
-            <h3>Scripts</h3>
-            <!-- Each header will dynamically show code -->
-            <div class="script-header" onclick="showCode('captioning')">captioning.py</div>
-            <!-- <div class="script-header" onclick="showCode('digital_photoframe_functions')">digital_photoframe_functions.py</div> -->
-            <div class="script-header" onclick="showCode('digital_photoframe_main')">digital_photoframe_main.py</div>
-            <!-- <div class="script-header" onclick="showCode('digital_photoframe_params')">digital_photoframe_params.py</div> -->
-            <div class="script-header" onclick="showCode('recognising_faces')">recognising_faces.py</div>
-            <div class="script-header" onclick="showCode('testing')">testing.py</div>
-        </div>
-
-        <div id="code-display" class="code-window">
-            <h3>Code Preview</h3>
-            <pre id="code-content">Select a script to view its code here.</pre>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
-    </footer>
-
- 
-
-    <script>
-        // Hardcoded code content for demonstration
-        const scriptContents = {
-            "captioning": 
-`
+// Hardcoded script contents
+const scriptContents = {
+    
+    "captioning": `
 import torch
 from diffusers import StableDiffusionPipeline
 import requests
@@ -751,13 +671,10 @@ The following are example captions, that must not be used, and the relevent cont
 process_images_in_folder(photos_dir)
 
 `
-        };
+};
 
-        // Function to display selected script content
-        function showCode(scriptName) {
-            const codeDisplay = document.getElementById('code-content');
-            codeDisplay.textContent = scriptContents[scriptName] || "Error: Script content not found.";
-        }
-    </script>
-</body>
-</html>
+// Function to display script content
+function showCode(scriptName) {
+    const codeDisplay = document.getElementById('code-content');
+    codeDisplay.textContent = scriptContents[scriptName] || "Error: Script content not found.";
+}

@@ -1,0 +1,182 @@
+/* General styles */
+html, body {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2f;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Centers horizontally */
+    justify-content: flex-start;  /* Aligns to the top */
+}
+
+/* Header styles - consistent for all pages */
+header {
+    background-color: #33374d;
+    padding: 15px 15px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header a {
+    color: #4a90e2;
+    text-decoration: none;
+    margin: 15px 15px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* Footer styles */
+footer {
+    background-color: #33374d;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #a6a6a6;
+}
+footer {
+    background-color: #33374d;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #a6a6a6;
+}
+/* Page title styles - applies to all headers */
+.page-title {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #2c2f3a;
+    text-align: center;
+}
+
+.page-title h1 {
+    font-size: 1.7rem;
+    color: #4a90e2;
+    margin: 0;
+    text-align: center; /* Center the title */
+}
+
+/* Main content container */
+.main-container {
+    flex: 1;
+    max-width: 800px;
+    min-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e2f;
+    border-left: 5px solid #4a90e2;
+    border-right: 5px solid #4a90e2;
+}
+
+/* Style for paragraphs */
+.main-container p {
+    text-align: left;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+/* Career timeline styles */
+.career-timeline {
+    width: 90%;
+    max-width: 800px;
+    margin-top: 30px;
+    background-color: #33374d;
+    padding: 30px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.career-item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+    position: relative;
+}
+
+.career-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.career-bar-container {
+    flex-grow: 1;
+    position: relative;
+    height: 40px;
+    background-color: #1e1e2f;
+    border-radius: 8px;
+    margin-left: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.career-bar {
+    background-color: #4a90e2;
+    height: 100%;
+    border-radius: 8px;
+    position: absolute;
+}
+
+.career-bar-description {
+    position: absolute;
+    right: 10px;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* Ensure the code preview area has a consistent width */
+#code-display {
+    width: 100%; /* Ensure it takes up the available width */
+    min-width: 800px;
+    max-width: 800px; /* Optional: Set a maximum width for better layout control */
+    margin: 20px auto; /* Center it horizontally */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow-x: auto; /* Allow horizontal scrolling if the code is too wide */
+}
+
+/* Set a fixed-width font for the code display area */
+#code-content {
+    font-family: monospace; /* Monospace for code */
+    white-space: pre-wrap; /* Ensure the code wraps */
+    word-wrap: break-word; /* Allow long lines to break and wrap */
+    line-height: 1.5; /* Add line height for readability */
+    width: 100%; /* Ensure it uses the full width of the container */
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .career-timeline {
+        padding: 20px;
+    }
+    .career-item {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 20px 0;
+    }
+    .career-bar-container {
+        margin-left: 0;
+        width: 100%;
+    }
+}

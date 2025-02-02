@@ -3,50 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trade Energy</title>
-    <script src="scripts/trade_energy.js"></script>
-    <link rel="stylesheet" href="../styles.css">
+    <title>Trading Energy - Ryan Robinson</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <style>
+        .script-header {
+            color: #4a90e2;
+            cursor: pointer;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #292938;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .script-header:hover {
+            background-color: #1e1e2f;
+        }
+
+        .code-window {
+            background-color: #292938;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #222;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #ccc;
+        }
+
+        nav a {
+            color: #4a90e2;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Trade Energy</h1>
-    <p>This page links to a trading model I have which uses an elementary neural networks model to forecast the price of electicity in San Francisco based on the weather. Soo I'll make this webpage a bit more interactive adding a selector for which city you want, as well as building out the model to consider enrgy blackouts, seasonal changes, and any other key driving factors I can find!</p>
+    <header>
+        <nav>
+            <a href="../../index.html">Home</a>
+            <a href="../projects.html">Projects</a>
+        </nav>
+    </header>
 
-    <h2>Run Model</h2>
-    <button onclick="runModel()">Run Trading Model</button>
-    <div id="output"></div>
+    <div class="page-title">
+        <h1>Trading Energy</h1>
+    </div>
 
-    <script>
-        async function runModel() {
-            try {
-                const response = await fetch('/runModel');
-                const data = await response.json();
-                
-                if (data.error) {
-                    document.getElementById('output').innerText = `Error: ${data.error}`;
-                } else {
-                    let outputHTML = `<p>Current Close Price: ${data.current_close_price}</p>`;
-                    outputHTML += '<table border="1"><tr><th>Day</th><th>Predicted Close Price</th><th>CI Lower 95%</th><th>CI Upper 95%</th></tr>';
-                    data.predictions.forEach(prediction => {
-                        outputHTML += `<tr>
-                            <td>${prediction.Day}</td>
-                            <td>${prediction.Predicted_Close_Price}</td>
-                            <td>${prediction.CI_Lower_95}</td>
-                            <td>${prediction.CI_Upper_95}</td>
-                        </tr>`;
-                    });
-                    outputHTML += '</table>';
-                    outputHTML += `<p>Trading Decision: ${data.decision}</p>`;
+    <div class="main-container">
+        <p>This page showcases the scripts used in the Trading Energy project. Click a script header to view its code.</p>
+        
+        <div class="code-window">
+            <h3>Scripts</h3>
+            <div class="script-header" onclick="showCode('main')">main.py</div>
+            <div class="script-header" onclick="showCode('data_processing/feature_engineering')">data_processing/feature_engineering.py</div>
+            <div class="script-header" onclick="showCode('data_processing/load_data')">data_processing/load_data.py</div>
+            <div class="script-header" onclick="showCode('evaluation/evaluate')">evaluation/evaluate.py</div>
+            <div class="script-header" onclick="showCode('model/neural_network')">model/neural_network.py</div>
+            <div class="script-header" onclick="showCode('model/predict')">model/predict.py</div>
+        </div>
 
-                    document.getElementById('output').innerHTML = outputHTML;
-                }
-            } catch (error) {
-                document.getElementById('output').innerText = `Error: ${error}`;
-            }
-        }
-    </script>
+        <div id="code-display" class="code-window">
+            <h3>Code Preview</h3>
+            <pre id="code-content">Select a script to view its code here.</pre>
+        </div>
+    </div>
 
     <footer>
-        <p>© 2024 Ryan Robinson - All Rights Reserved</p>
+        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
     </footer>
+
+ 
+
+    <script>
+        // Hardcoded code content for demonstration
+        const scriptContents = {
+            "main": 
+`
+from data_processing.load_data import collect_data, clean_data
+from data_processing.feature_engineering import extract_features
+from model.neural_network import train_model
+from model.predict import make_predictions
+from evaluation.evaluate import evaluate_model
+from logger.logger import setup_logger, log_info, log_error
+import requests
+import pandas as pd
+
+openweathermap_api_key = 'XXX'
+city = 'San Francisco'
+
+eia_api_key = "XXX"
+
+def main():
+    setup_logger()
+
+    url = f"https://api.eia.gov/v2/electricity/rto/wholesale-prices/data/?api_key={eia_api_key}"
+    response = requests.get(url)
+    data = response.json()
+    series_data = data['response']['data']
+    df = pd.DataFrame(series_data, columns=['date', 'value'])
+    df.columns = ['Date', 'System_Load']
+    print("testing system_load\n\n\n", data, "\n\n\ntested system_load")
+    
+    try:
+        log_info("Loading data...")
+        df = collect_data(openweathermap_api_key, eia_api_key, city)
+        print("\nLoaded Data:\n", df.head())
+        
+        log_info("Cleaning data...")
+        df = clean_data(df)
+        print("\nCleaned Data:\n", df.columns, "\n", df)
+
+        log_info("Extracting features...")
+        features, target = extract_features(df)
+        print("\nExtracted features:\n", features.columns, "\n", features)
+        print("\nExtracted target:\n", target.columns, "\n", target)
+
+        log_info("Training model...")
+        model = train_model(features, target)
+        print("\nTrained Model:\n", model, "\n")
+
+        log_info("Evaluating model...")
+        evaluate_model(model, features, target)
+        print("\nEvaluated Model", "\n")
+
+        log_info("Making predictions...")
+        predictions = make_predictions(model, features)
+        print("\nPredictions:\n", predictions)
+
+    except Exception as e:
+        log_error(f"An error occurred: {e}")
+        raise
+
+if __name__ == '__main__':
+    main()
+`
+,
+            "data_processing/feature_engineering":
+`
+import pandas as pd
+
+def extract_features(df):
+    # Example feature extraction: scaling system loads, weather, fuel costs, and reserve margins
+    df['system_load_scaled'] = (df['system_load'] - df['system_load'].mean()) / df['system_load'].std()
+    df['weather_scaled'] = (df['temperature'] - df['temperature'].mean()) / df['temperature'].std()
+    df['fuel_cost_scaled'] = (df['fuel_cost'] - df['fuel_cost'].mean()) / df['fuel_cost'].std()
+    df['reserve_margin_scaled'] = (df['reserve_margin'] - df['reserve_margin'].mean()) / df['reserve_margin'].std()
+    
+    # Example: Combine geography, system loads, weather, etc., into a feature matrix
+    features = df[['geography', 'system_load_scaled', 'weather_scaled', 'fuel_cost_scaled', 'reserve_margin_scaled']]
+    target = df['energy_price']
+    
+    return features, target
+`
+,
+            "data_processing/load_data":
+`
+import pandas as pd
+import requests
+
+def get_weather_data(api_key, city):
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric"
+    response = requests.get(url)
+    data = response.json()
+    return data
+
+# Example usage
+api_key = 'XXXX'
+city = 'San Francisco'
+
+
+def clean_data(df):
+    # Clean the data (handling missing values, filtering outliers, etc.)
+    df = df.dropna()  # Example: drop rows with NaN
+    return df
+`
+,
+            "evaluation/evaluate":
+`
+from sklearn.metrics import mean_squared_error
+
+def evaluate_model(model, features, target):
+    predictions = model.predict(features)
+    mse = mean_squared_error(target, predictions)
+    print(f"Mean Squared Error: {mse}")
+`
+,
+            "model/neural_network":
+`
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+
+def build_model(input_shape):
+    model = Sequential([
+        Dense(64, activation='relu', input_shape=(input_shape,)),
+        Dense(32, activation='relu'),
+        Dense(1, activation='linear')  # Output: predicting energy prices
+    ])
+
+    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
+    return model
+
+def train_model(features, target):
+    model = build_model(features.shape[1])
+    model.fit(features, target, epochs=100, batch_size=32, validation_split=0.2)
+    model.save('model/energy_price_predictor.h5')  # Save the model
+    return model
+`
+,
+            "model/predict":
+`
+import tensorflow as tf
+import pandas as pd
+
+def make_predictions(model, features):
+    predictions = model.predict(features)
+    return predictions
+`
+        };
+
+        // Function to display selected script content
+        function showCode(scriptName) {
+            const codeDisplay = document.getElementById('code-content');
+            codeDisplay.textContent = scriptContents[scriptName] || "Error: Script content not found.";
+        }
+    </script>
 </body>
 </html>

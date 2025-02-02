@@ -4,15 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluid Thermal Convection Diffusion - Ryan Robinson</title>
-    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.css"> <!-- Absolute path -->
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="../../index.html">Home</a>
-            <a href="../index.html">Projects</a>
-        </nav>
-    </header>
+
+    <div id="header-container"></div> <!-- Header will be inserted here -->
 
     <div class="page-title">
         <h1>Fluid Thermal Convection Diffusion</h1>
@@ -20,30 +16,23 @@
 
     <div class="main-container">
         <p>This project simulates fluid and thermal convection diffusion using advanced modeling techniques.</p>
-
+        
+        <!-- Script Headers -->
         <div class="code-window">
             <h3>Scripts</h3>
             <div class="script-header" onclick="showCode('fluid_thermal_convection_diffusion_main')">fluid_thermal_convection_diffusion_main.py</div>
         </div>
 
+        <!-- Code Display Area -->
         <div id="code-display" class="code-window">
             <h3>Code Preview</h3>
             <pre id="code-content">Select a script to view its code here.</pre>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
-    </footer>
+    <div id="footer-container"></div> <!-- Footer will be inserted here -->
 
-    <script>
-        function showCode(scriptName) {
-            const url = `/projects/fluid_thermal_convection_diffusion/scripts/${scriptName}.py`;
-            fetch(url)
-                .then(response => response.text())
-                .then(data => document.getElementById('code-content').textContent = data)
-                .catch(err => document.getElementById('code-content').textContent = 'Error loading script: ' + err);
-        }
-    </script>
+    <!-- Corrected JavaScript Link for Fluid Thermal Convection Diffusion -->
+    <script src="/assets/js/scripts_fluid_thermal_convection_diffusion.js"></script> <!-- Absolute path for specific JS -->
 </body>
 </html>

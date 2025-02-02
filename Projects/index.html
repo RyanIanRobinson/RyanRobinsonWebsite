@@ -4,43 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ryan Robinson - Projects</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <style>
-        /* Basic styling, you can tweak this to your needs */
-        .projects-container {
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-        .project-item {
-            margin-bottom: 40px;
-            padding: 15px;
-            background-color: #33374d;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .project-title {
-            font-size: 1.8rem;
-            color: #4a90e2;
-            margin-bottom: 10px;
-        }
-        .project-description {
-            font-size: 1.1rem;
-            color: #ccc;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
 
-    <header>
-        <nav>
-            <a href="../index.html">Home</a>
-            <a href="../projects/index.html">Projects</a>
-            <a href="../trading/index.html">Trading</a>
-            <a href="../games/index.html">Games</a>
-        </nav>
-    </header>
+    <!-- Header will be dynamically inserted here -->
+    <div id="header-container"></div>
 
     <div class="projects-container">
         <h1>My Projects</h1>
@@ -52,7 +21,7 @@
             <p class="project-description">
                 A smart digital photo frame project that allows you to display images dynamically. Features include automatic photo selection, captions, and image transitions.
             </p>
-            <p><a href="projects/digital_photoframe">Learn More</a></p>
+            <p><a href="/projects/digital_photoframe.html">Learn More</a></p>
         </div>
 
         <!-- Fluid Thermal Convection Diffusion -->
@@ -61,6 +30,7 @@
             <p class="project-description">
                 A simulation project focused on the study of fluid flow and thermal diffusion. It uses computational models to simulate convection and diffusion processes in various fluids.
             </p>
+            <p><a href="/projects/fluid_thermal_convection_diffusion.html">Learn More</a></p>
         </div>
 
         <!-- Thermal Conduction -->
@@ -69,11 +39,14 @@
             <p class="project-description">
                 A project that models heat conduction through materials. It calculates the rate of heat transfer and simulates the effects of thermal conductivity in different scenarios.
             </p>
+            <p><a href="/projects/thermal_conduction.html">Learn More</a></p>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
-    </footer>
+    <!-- Footer will be dynamically inserted here -->
+    <div id="footer-container"></div>
+
+    <!-- External JS for dynamically loading the header and footer -->
+    <script src="/assets/js/scripts_projects.js"></script> <!-- Adjust the path as necessary -->
 </body>
 </html>

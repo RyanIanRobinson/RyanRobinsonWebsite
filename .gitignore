@@ -5,8 +5,23 @@
 # Ignore all .txt files
 *.txt
 
+# Ignore data files
+*.xlsx
+*.csv
+*.log
+
 # Ignore all files in data and cache directories
 */input_data/*
 */training_data/*
 *_cache/*
 */__pycache__/*
+
+# Ignore random files
+*.dll
+*.pak
+*.testcase
+*.pyc
+*.pkl
+
+# Ignore folders/projects not yet ready
+*/apps\RRF/

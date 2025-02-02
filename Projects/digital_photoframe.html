@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Photoframe Project - Ryan Robinson</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+    <div id="header-container"></div> <!-- Header will be inserted here -->
+
+    <div class="page-title">
+        <h1>Digital Photoframe</h1>
+    </div>
+
+    <div class="main-container">
+        <p>This page showcases the scripts used in the Digital Photoframe project. Click a script header to view its code.</p>
+        
+        <div class="code-window">
+            <h3>Scripts</h3>
+            <div class="script-header" onclick="showCode('captioning')">captioning.py</div>
+            <div class="script-header" onclick="showCode('digital_photoframe_main')">digital_photoframe_main.py</div>
+            <div class="script-header" onclick="showCode('recognising_faces')">recognising_faces.py</div>
+            <div class="script-header" onclick="showCode('testing')">testing.py</div>
+        </div>
+
+        <div id="code-display" class="code-window">
+            <h3>Code Preview</h3>
+            <pre id="code-content">Select a script to view its code here.</pre>
+        </div>
+    </div>
+
+    <div id="footer-container"></div> <!-- Footer will be inserted here -->
+
+    <script src="/assets/js/scripts_digital_photoframe.js"></script> <!-- JavaScript File -->
+</body>
+</html>

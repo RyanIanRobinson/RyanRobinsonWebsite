@@ -3,76 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ryan Robinson - Trading</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <style>
-        /* Styling for trading page */
-        .trading-container {
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-        .trading-item {
-            margin-bottom: 40px;
-            padding: 15px;
-            background-color: #33374d;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .trading-title {
-            font-size: 1.8rem;
-            color: #4a90e2;
-            margin-bottom: 10px;
-        }
-        .trading-description {
-            font-size: 1.1rem;
-            color: #ccc;
-        }
-    </style>
+    <title>Ryan Robinson - Projects</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
 
-    <header>
-        <nav>
-            <a href="../index.html">Home</a>
-            <a href="../projects/index.html">Projects</a>
-            <a href="../trading/index.html">Trading</a>
-            <a href="../games/index.html">Games</a>
-        </nav>
-    </header>
+    <!-- Header will be dynamically inserted here -->
+    <div id="header-container"></div>
 
+    <div class="content-container">
     <div class="trading-container">
         <h1>My Trading Projects</h1>
         <p>Explore my work in the world of trading. From energy market simulations to stock trading algorithms, I’ve built and trained neural networks to make smarter trades and predictions. Here's a summary of some of the trading-related projects:</p>
 
         <!-- Trade Energy -->
         <div class="trading-item">
-            <h2 class="trading-title"><a href="../trading/trade_energy/index.html" style="color: #4a90e2;">Trade Energy</a></h2>
+            <h2 class="trading-title">Trade Energy</h2>
             <p class="trading-description">
                 A project focused on energy trading, where I built models to predict energy price fluctuations. It uses neural networks to analyze trends and optimize energy trading strategies.
             </p>
+            <p><a href="/trading/trade_energy.html">Learn More</a></p>
         </div>
 
         <!-- Trade Stocks -->
         <div class="trading-item">
-            <h2 class="trading-title"><a href="../trading/trade_stocks/index.html" style="color: #4a90e2;">Trade Stocks</a></h2>
+            <h2 class="trading-title">Trade Stocks</h2>
             <p class="trading-description">
                 A stock trading algorithm using machine learning models. It processes stock data to predict price movements and makes trade decisions based on those predictions.
             </p>
+            <p><a href="/trading/trade_stocks.html">Learn More</a></p>
         </div>
 
         <!-- Neural Networks -->
         <div class="trading-item">
-            <h2 class="trading-title"><a href="../trading/neural_networks/index.html" style="color: #4a90e2;">Neural Networks for Market Prediction</a></h2>
+            <h2 class="trading-title">Neural Networks for Market Prediction</h2>
             <p class="trading-description">
                 A project focused on training neural networks to predict stock prices and optimize trading strategies using historical market data.
             </p>
+            <p><a href="/trading/neural_networks.html">Learn More</a></p>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2025 Ryan Robinson. All Rights Reserved.</p>
-    </footer>
+    <!-- Footer will be dynamically inserted here -->
+    <div id="footer-container"></div>
+
+    <!-- External JS for dynamically loading the header and footer -->
+    <script src="/assets/js/scripts_trading.js"></script> <!-- Adjust the path as necessary -->
 </body>
 </html>
